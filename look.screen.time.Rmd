@@ -1,0 +1,106 @@
+---
+output:
+  html_document: default
+---
+```{r setup, include = F}
+library(tidyverse)
+library(knitr)
+library(ggplot2)
+wd <- '~/Documents/Making Things/DataViz/Screen Time/'
+knitr::opts_knit$set(root.dir = wd)
+```
+
+
+```{r, include = F}
+### read data
+df <- read.csv('My.Screen.Time - Sheet1.csv')
+df$Day <- paste0(df$Day, '/2019')
+
+### reformat dates
+df$Day.Reformat <- as.Date(df$Day, format = "%m/%d/%Y")
+
+### making variables
+df$Avg.minutes.per.pickup <- df$Screen.time/df$Num.pickups
+df$Weekend <- ifelse(df$Day.of.week %in% c('Saturday', 'Sunday'), 'Yes', 'No')
+
+### refactoring days of week
+df$Day.of.week <- factor(df$Day.of.week, levels = c('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'))
+
+## helps with coloring
+df$gp <- ifelse(df$Day.Reformat > '2019-08-12', 1, 0)
+df$gp[which(df$Day.Reformat > '2019-09-24')] <- 2
+
+### save df
+save(df, file = 'df.rds')
+```
+
+### About the data:
+I got the screen time from the iPhone Screen Time tool, which automatically tracks how long you use your phone each day.  I kept track of this from 7/19/2019 to 9/29/2019, with a two week gap from 8/10 to 8/26 (I was on vacation with limited cell service, so I figured that this would result in a lot more variability than usual). Some days, I kept my phone in grayscale display mode (which you can change in your settings). I then plotted the amount of time I use my phone (in minutes), coloring by whether or not my phone was in grayscale.  
+
+```{r, echo = F}
+p <- ggplot(df, aes(Day.Reformat, Screen.time, col = Grayscale, group = gp)) + geom_line() + ylab('Screen time (minutes)') + xlab('Date')
+
+otakon <- as.Date('07/26/2019', format = "%m/%d/%Y")
+grant <- as.Date('07/31/2019', format = "%m/%d/%Y")
+wtoon <- as.Date('09/10/2019', format = "%m/%d/%Y")
+spx <- as.Date('09/14/2019', format = "%m/%d/%Y")
+wrist <- as.Date('09/15/2019', format = "%m/%d/%Y")
+vacay <- as.Date('08/18/2019', format = "%m/%d/%Y")
+conf <- as.Date('09/27/2019', format = "%m/%d/%Y")
+
+w.annot <- p + annotate(geom="text", x=otakon, y=135, label="Otakon", color="black") + annotate(geom="text", x=grant, y=25, label="Grant due", color="black") + annotate(geom="text", x=wtoon, y=205, label="Webtoon binge", color="black") + annotate(geom="text", x=spx, y=135, label="SPX", color="black")  + annotate(geom="text", x=wrist, y=20, label="Wrist injury", color="black") + annotate(geom="text", x=vacay, y=90, label="Vacation", color="black") + annotate(geom="text", x=conf, y=40, label="Conference", color="black")
+
+lims = as.Date(c("2019-07-17","2019-10-3"))
+
+w.title <- w.annot + ggtitle('Grayscale and phone usage over time') + scale_color_manual(values=c("#FF0000", "#999999")) + scale_x_date(date_breaks = "15 days", date_labels = '%b-%e', limits = lims)
+
+print(w.title)
+```
+
+### Plot grayscale vs. no grayscale
+Boxplots of screen time usage based on grayscale vs. no grayscale.  Seems like I use my phone less when it's in grayscale, which makes sense. It's a significant difference, with grayscale having an estimated effect size of about thirty fewer minutes of screen time.
+ 
+```{r}
+give.n <- function(x){return(c(y = min(x)-(sd(x)/2), label = length(x)))}
+gscale <- ggplot(df, aes(Grayscale, Screen.time, fill = Grayscale)) + geom_boxplot( ) + stat_summary(fun.data = give.n, geom = "text") + geom_point() + ggtitle('Beta for grayscale: -27.49, p-value = 0.00548') + xlab('Grayscale') + ylab('Screen time (minutes)') + scale_fill_manual(values=c("#FF0000", "#999999")) + theme(legend.title = element_blank()) 
+print(gscale)
+lm(df$Screen.time ~ df$Grayscale) %>% summary
+```
+
+```{r, echo = F}
+# ### Plot by day of week
+# d.of.week <- ggplot(df, aes(Day.of.week, Screen.time, fill = Grayscale)) + geom_boxplot( )  + scale_fill_manual(values=c("#FF0000", "#999999")) + xlab('Day of the week') + ylab('Screen time (minutes)') + ggtitle('No grayscale leads to increased screentime') 
+# print(d.of.week)
+```
+
+### Omit special days
+There are certain events that resulted in me using my phone a lot more than usual - does this result still hold up if I omit those days?  It appears like it does, and the effect size is actually larger now.
+```{r}
+no.specials <- subset(df, Wrist.Injury == 'No')
+no.specials <- subset(no.specials, Special.Event == '')
+
+lm(no.specials$Screen.time ~ no.specials$Grayscale) %>% summary
+
+no.special <- ggplot(no.specials, aes(Grayscale, Screen.time, fill = Grayscale)) + geom_boxplot( ) + stat_summary(fun.data = give.n, geom = "text") + geom_point() + ggtitle('Beta for grayscale after omitting special events: -31.59, p-value = 0.00131') + xlab('Grayscale') + ylab('Screen time (minutes)')  + scale_fill_manual(values=c("#FF0000", "#999999")) + theme(legend.title = element_blank()) 
+print(no.special)
+```
+
+
+### pic for reddit:
+```{r}
+# library(gridExtra)
+# # grid.arrange(w.title, gscale, ncol = 1)
+# png(file = '~/Desktop/for.reddit.png', height = 600, width = 600)
+# grid.arrange(w.title, d.of.week, ncol = 1)
+# dev.off()
+
+png(file = '~/Desktop/for.reddit2.png', height = 250, width = 500)
+print(w.title)
+dev.off()
+
+png(file = '~/Desktop/nosurf.png', height = 400, width = 400)
+print(no.special)
+dev.off()
+
+```
+

@@ -1,0 +1,58 @@
+Day,Day.of.week,Screen.time,Num.pickups,Grayscale,Special.Event,Wrist.Injury
+7/19,Friday,117,161,Yes,,No
+7/20,Saturday,40,53,Yes,,No
+7/21,Sunday,29,29,Yes,,No
+7/22,Monday,63,88,Yes,,No
+7/23,Tuesday,88,106,Yes,,No
+7/24,Wednesday,51,88,Yes,,No
+7/25,Thursday,123,188,Yes,,No
+7/26,Friday,125,178,Yes,Convention,No
+7/27,Saturday,116,139,Yes,Convention,No
+7/28,Sunday,119,126,Yes,,No
+7/29,Monday,52,76,Yes,,No
+7/30,Tuesday,45,63,Yes,,No
+7/31,Wednesday,33,66,Yes,Grant due,No
+8/1,Thursday,50,74,Yes,Grant due,No
+8/2,Friday,33,66,Yes,Grant due,No
+8/3,Saturday,57,98,Yes,Grant due,No
+8/5,Monday,68,122,Yes,,No
+8/6,Tuesday,71,118,Yes,,No
+8/7,Wednesday,60,105,Yes,,No
+8/8,Thursday,73,126,Yes,,No
+8/9,Friday,61,114,Yes,,No
+8/10,Saturday,66,93,Yes,,No
+8/26,Monday,104,145,No,,No
+8/27,Tuesday,107,153,No,,No
+8/28,Wednesday,174,192,No,,No
+8/29,Thursday,118,127,No,,No
+8/30,Friday,108,142,No,,No
+8/31,Saturday,104,134,No,,No
+9/1,Sunday,69,81,No,,No
+9/2,Monday,97,131,No,,No
+9/3,Tuesday,138,144,No,,No
+9/4,Wednesday,82,128,No,,No
+9/5,Thursday,59,108,No,,No
+9/6,Friday,87,136,No,,No
+9/7,Saturday,95,126,No,,No
+9/8,Sunday,67,106,No,,No
+9/9,Monday,75,114,No,,No
+9/10,Tuesday,198,107,No,Webtoon binge,No
+9/11,Wednesday,132,143,No,,No
+9/12,Thursday,93,96,No,,No
+9/13,Friday,128,163,No,,No
+9/14,Saturday,111,77,No,Convention,Yes
+9/15,Sunday,75,46,No,,Yes
+9/16,Monday,27,56,No,,Yes
+9/17,Tuesday,42,84,No,,Yes
+9/18,Wednesday,36,67,No,,Yes
+9/19,Thursday,92,115,No,,No
+9/20,Friday,128,135,No,,No
+9/21,Saturday,78,113,No,,No
+9/22,Sunday,118,118,No,,No
+9/23,Monday,163,155,No,,No
+9/24,Tuesday,89,109,Yes,,No
+9/25,Wednesday,56,84,Yes,,No
+9/26,Thursday,46,91,Yes,Conference,No
+9/27,Friday,106,71,Yes,Conference,No
+9/28,Saturday,142,73,Yes,,No
+9/29,Sunday,56,76,Yes,,No
