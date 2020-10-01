@@ -1,1 +1,1 @@
-## Analysis looking at effect of grayscale on my phone usage
+Analysis looking at the effect of grayscale on my phone usage
